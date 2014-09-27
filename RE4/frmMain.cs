@@ -111,5 +111,17 @@ namespace RE4
         {
             lvData.DoubleBuffered(true);
         }
+
+        private void adjustDifficultyScaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Int16 newValue = 0;
+            string newValueString = Microsoft.VisualBasic.Interaction.InputBox("New value:", "Edit Dyanmic Difficulty Scale (1000 - 10000)");
+            if (Int16.TryParse(newValueString, out newValue))
+            {
+                var memoryWriter = new MemoryWriter("bio4");
+                memoryWriter.WriteInt16(0x085BE74, newValue);
+                _residentEvilMemory.Populate(_memoryReader);
+            }
+        }
     }
 }

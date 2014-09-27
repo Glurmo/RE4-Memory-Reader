@@ -37,6 +37,7 @@
             this.menuItemStop = new System.Windows.Forms.ToolStripMenuItem();
             this.imageHack = new System.Windows.Forms.ImageList(this.components);
             this.timerMemory = new System.Windows.Forms.Timer(this.components);
+            this.adjustDifficultyScaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ListviewMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -72,21 +73,22 @@
             // 
             this.ListviewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemStart,
-            this.menuItemStop});
+            this.menuItemStop,
+            this.adjustDifficultyScaleToolStripMenuItem});
             this.ListviewMenu.Name = "ListviewMenu";
-            this.ListviewMenu.Size = new System.Drawing.Size(99, 48);
+            this.ListviewMenu.Size = new System.Drawing.Size(176, 92);
             // 
             // menuItemStart
             // 
             this.menuItemStart.Name = "menuItemStart";
-            this.menuItemStart.Size = new System.Drawing.Size(98, 22);
+            this.menuItemStart.Size = new System.Drawing.Size(175, 22);
             this.menuItemStart.Text = "Start";
             this.menuItemStart.Click += new System.EventHandler(this.menuItemStart_Click);
             // 
             // menuItemStop
             // 
             this.menuItemStop.Name = "menuItemStop";
-            this.menuItemStop.Size = new System.Drawing.Size(98, 22);
+            this.menuItemStop.Size = new System.Drawing.Size(175, 22);
             this.menuItemStop.Text = "Stop";
             this.menuItemStop.Click += new System.EventHandler(this.menuItemStop_Click);
             // 
@@ -100,6 +102,13 @@
             // 
             this.timerMemory.Interval = 200;
             this.timerMemory.Tick += new System.EventHandler(this.timerMemory_Tick);
+            // 
+            // adjustDifficultyScaleToolStripMenuItem
+            // 
+            this.adjustDifficultyScaleToolStripMenuItem.Name = "adjustDifficultyScaleToolStripMenuItem";
+            this.adjustDifficultyScaleToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.adjustDifficultyScaleToolStripMenuItem.Text = "Edit Difficulty Scale";
+            this.adjustDifficultyScaleToolStripMenuItem.Click += new System.EventHandler(this.adjustDifficultyScaleToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -125,6 +134,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemStop;
         private System.Windows.Forms.Timer timerMemory;
         private System.Windows.Forms.ImageList imageHack;
+        private System.Windows.Forms.ToolStripMenuItem adjustDifficultyScaleToolStripMenuItem;
 
     }
 }
