@@ -35,25 +35,29 @@
             this.ListviewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuItemStart = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.adjustDifficultyScaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageHack = new System.Windows.Forms.ImageList(this.components);
             this.timerMemory = new System.Windows.Forms.Timer(this.components);
-            this.adjustDifficultyScaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ListviewMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvData
             // 
+            this.lvData.BackColor = System.Drawing.SystemColors.WindowText;
+            this.lvData.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lvData.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnDesc,
             this.columnValue});
             this.lvData.ContextMenuStrip = this.ListviewMenu;
             this.lvData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lvData.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lvData.ForeColor = System.Drawing.SystemColors.Window;
             this.lvData.FullRowSelect = true;
-            this.lvData.GridLines = true;
+            this.lvData.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvData.Location = new System.Drawing.Point(0, 0);
+            this.lvData.Margin = new System.Windows.Forms.Padding(0);
             this.lvData.Name = "lvData";
-            this.lvData.Size = new System.Drawing.Size(392, 457);
+            this.lvData.Size = new System.Drawing.Size(273, 421);
             this.lvData.StateImageList = this.imageHack;
             this.lvData.TabIndex = 0;
             this.lvData.UseCompatibleStateImageBehavior = false;
@@ -62,12 +66,12 @@
             // columnDesc
             // 
             this.columnDesc.Text = " Description";
-            this.columnDesc.Width = 248;
+            this.columnDesc.Width = 150;
             // 
             // columnValue
             // 
             this.columnValue.Text = "Value";
-            this.columnValue.Width = 140;
+            this.columnValue.Width = 120;
             // 
             // ListviewMenu
             // 
@@ -76,7 +80,7 @@
             this.menuItemStop,
             this.adjustDifficultyScaleToolStripMenuItem});
             this.ListviewMenu.Name = "ListviewMenu";
-            this.ListviewMenu.Size = new System.Drawing.Size(176, 92);
+            this.ListviewMenu.Size = new System.Drawing.Size(176, 70);
             // 
             // menuItemStart
             // 
@@ -92,6 +96,13 @@
             this.menuItemStop.Text = "Stop";
             this.menuItemStop.Click += new System.EventHandler(this.menuItemStop_Click);
             // 
+            // adjustDifficultyScaleToolStripMenuItem
+            // 
+            this.adjustDifficultyScaleToolStripMenuItem.Name = "adjustDifficultyScaleToolStripMenuItem";
+            this.adjustDifficultyScaleToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.adjustDifficultyScaleToolStripMenuItem.Text = "Edit Difficulty Scale";
+            this.adjustDifficultyScaleToolStripMenuItem.Click += new System.EventHandler(this.adjustDifficultyScaleToolStripMenuItem_Click);
+            // 
             // imageHack
             // 
             this.imageHack.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -103,18 +114,11 @@
             this.timerMemory.Interval = 200;
             this.timerMemory.Tick += new System.EventHandler(this.timerMemory_Tick);
             // 
-            // adjustDifficultyScaleToolStripMenuItem
-            // 
-            this.adjustDifficultyScaleToolStripMenuItem.Name = "adjustDifficultyScaleToolStripMenuItem";
-            this.adjustDifficultyScaleToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.adjustDifficultyScaleToolStripMenuItem.Text = "Edit Difficulty Scale";
-            this.adjustDifficultyScaleToolStripMenuItem.Click += new System.EventHandler(this.adjustDifficultyScaleToolStripMenuItem_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(392, 457);
+            this.ClientSize = new System.Drawing.Size(273, 421);
             this.Controls.Add(this.lvData);
             this.Name = "frmMain";
             this.Text = "Resident Evil 4 Memory";

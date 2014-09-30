@@ -43,10 +43,10 @@ namespace RE4
 
             var rows = new []
             {
-                Tuple.Create("Dynamic Difficulty Level", r.DynamicDifficultyLevel.ToString(), defaultColour), 
-                Tuple.Create("Dynamic Difficulty Scale", r.DynamicDifficultyScale.ToString(), defaultColour), 
+                Tuple.Create("Difficulty Level", r.DynamicDifficultyLevel.ToString(), defaultColour), 
+                Tuple.Create("Difficulty Scale", r.DynamicDifficultyScale.ToString(), defaultColour), 
                 Tuple.Create(
-                    "Difficulty Scale Delta", 
+                    "Scale Delta", 
                     r.PreviousDynamicDifficultyScaleDelta.ToString(), 
                     (r.PreviousDynamicDifficultyScaleDelta > 0) ? Color.Green : Color.Red
                 ),
@@ -85,6 +85,7 @@ namespace RE4
             {
                 var item = new ListViewItem();
                 item.Text = row.Item1;
+                item.Font = new Font(lvData.Font, FontStyle.Bold);
                 var subItem = new ListViewItem.ListViewSubItem()
                 {
                     Text = row.Item2,
