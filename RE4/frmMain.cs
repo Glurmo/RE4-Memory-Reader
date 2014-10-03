@@ -17,28 +17,25 @@ namespace RE4
         private MemoryReader _memoryReader;
         private ResidentEvilMemory _residentEvilMemory;
 
+        private const string PROCESS_NAME = "bio4";
+
         public frmMain()
         {
             InitializeComponent();
         }
 
-        private void _stopLogging()
-        {
-            timerMemory.Stop();
-            _memoryReader = null;
-            lvData.Items.Clear();
-        }
-
         private void timerMemory_Tick(object sender, EventArgs e)
         {
-            if (_residentEvilMemory == null || _memoryReader == null)
+            if (_memoryReader == null || _residentEvilMemory == null)
             {
-                _memoryReader = new MemoryReader("bio4");
+                _memoryReader = new MemoryReader(PROCESS_NAME);
                 _residentEvilMemory = new ResidentEvilMemory();
             }
-            if (!_memoryReader.IsProcessOpen())
+            if (!_memoryReader.IsProcessOpen() && !_memoryReader.OpenProcess(PROCESS_NAME))
             {
-                _stopLogging();
+                lvData.Items.Clear();
+                lvData.Items.Add(String.Format("Waiting for {0}.exe", PROCESS_NAME));
+                _residentEvilMemory.Reset();
             }
             else
             {
@@ -47,6 +44,23 @@ namespace RE4
             }
         }
 
+        
+        private void adjustDifficultyScaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Int16 newValue = 0;
+            string newValueString = Microsoft.VisualBasic.Interaction.InputBox("New value:", "Edit Dyanmic Difficulty Scale (1000 - 10000)");
+            if (Int16.TryParse(newValueString, out newValue))
+            {
+                var memoryWriter = new MemoryWriter("bio4");
+                memoryWriter.WriteInt16(0x085BE74, newValue);
+                _residentEvilMemory.Populate(_memoryReader);
+            }
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            lvData.DoubleBuffered(true);
+        }
         private void _populateListView()
         {
             lvData.BeginUpdate();
@@ -58,7 +72,7 @@ namespace RE4
             int dynamicDifficultyScaleDelta = cs.DynamicDifficultyScale - pv.DynamicDifficultyScale;
             int healthDelta = cs.HealthRemaining - pv.HealthRemaining;
 
-            var rows = new []
+            var rows = new[]
             {
                 Tuple.Create("Difficulty Level", cs.DynamicDifficultyLevel.ToString(), defaultColour), 
                 Tuple.Create("Difficulty Scale", cs.DynamicDifficultyScale.ToString(), defaultColour), 
@@ -102,7 +116,7 @@ namespace RE4
             {
                 var item = new ListViewItem
                 {
-                    Text = row.Item1, 
+                    Text = row.Item1,
                     Font = new Font(lvData.Font, FontStyle.Bold),
                     UseItemStyleForSubItems = false
                 };
@@ -117,31 +131,9 @@ namespace RE4
             lvData.EndUpdate();
         }
 
-        private void menuItemStart_Click(object sender, EventArgs e)
+        private void ListviewMenu_Opening(object sender, CancelEventArgs e)
         {
-            timerMemory.Start();
-        }
-
-        private void menuItemStop_Click(object sender, EventArgs e)
-        {
-            _stopLogging();
-        }
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-            lvData.DoubleBuffered(true);
-        }
-
-        private void adjustDifficultyScaleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Int16 newValue = 0;
-            string newValueString = Microsoft.VisualBasic.Interaction.InputBox("New value:", "Edit Dyanmic Difficulty Scale (1000 - 10000)");
-            if (Int16.TryParse(newValueString, out newValue))
-            {
-                var memoryWriter = new MemoryWriter("bio4");
-                memoryWriter.WriteInt16(0x085BE74, newValue);
-                _residentEvilMemory.Populate(_memoryReader);
-            }
+            adjustDifficultyScaleToolStripMenuItem.Enabled = _memoryReader.IsProcessOpen();
         }
     }
 }

@@ -33,8 +33,6 @@
             this.columnDesc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ListviewMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuItemStart = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuItemStop = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustDifficultyScaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageHack = new System.Windows.Forms.ImageList(this.components);
             this.timerMemory = new System.Windows.Forms.Timer(this.components);
@@ -76,25 +74,10 @@
             // ListviewMenu
             // 
             this.ListviewMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuItemStart,
-            this.menuItemStop,
             this.adjustDifficultyScaleToolStripMenuItem});
             this.ListviewMenu.Name = "ListviewMenu";
-            this.ListviewMenu.Size = new System.Drawing.Size(176, 70);
-            // 
-            // menuItemStart
-            // 
-            this.menuItemStart.Name = "menuItemStart";
-            this.menuItemStart.Size = new System.Drawing.Size(175, 22);
-            this.menuItemStart.Text = "Start";
-            this.menuItemStart.Click += new System.EventHandler(this.menuItemStart_Click);
-            // 
-            // menuItemStop
-            // 
-            this.menuItemStop.Name = "menuItemStop";
-            this.menuItemStop.Size = new System.Drawing.Size(175, 22);
-            this.menuItemStop.Text = "Stop";
-            this.menuItemStop.Click += new System.EventHandler(this.menuItemStop_Click);
+            this.ListviewMenu.Size = new System.Drawing.Size(176, 48);
+            this.ListviewMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ListviewMenu_Opening);
             // 
             // adjustDifficultyScaleToolStripMenuItem
             // 
@@ -111,6 +94,7 @@
             // 
             // timerMemory
             // 
+            this.timerMemory.Enabled = true;
             this.timerMemory.Interval = 200;
             this.timerMemory.Tick += new System.EventHandler(this.timerMemory_Tick);
             // 
@@ -134,8 +118,6 @@
         private System.Windows.Forms.ColumnHeader columnDesc;
         private System.Windows.Forms.ColumnHeader columnValue;
         private System.Windows.Forms.ContextMenuStrip ListviewMenu;
-        private System.Windows.Forms.ToolStripMenuItem menuItemStart;
-        private System.Windows.Forms.ToolStripMenuItem menuItemStop;
         private System.Windows.Forms.Timer timerMemory;
         private System.Windows.Forms.ImageList imageHack;
         private System.Windows.Forms.ToolStripMenuItem adjustDifficultyScaleToolStripMenuItem;

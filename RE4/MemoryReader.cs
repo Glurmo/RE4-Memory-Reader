@@ -21,9 +21,24 @@ namespace RE4
 
         public MemoryReader(string processName)
         {
-            _process = Process.GetProcessesByName(processName)[0];
+            OpenProcess(processName);
+        }
+
+        public bool OpenProcess(string processName)
+        {
+            var processes = Process.GetProcessesByName(processName);
+            if (processes.Length == 0)
+            {
+                return false;
+            }
+            _process = processes.First();
+            if (_process.HasExited)
+            {
+                return false;
+            }
             _processHandle = OpenProcess(PROCESS_WM_READ, false, _process.Id);
             _baseAddress = (uint)_process.MainModule.BaseAddress.ToInt32();
+            return true;
         }
 
         private byte[] _readBytes(uint address, int length)
@@ -52,7 +67,7 @@ namespace RE4
 
         public bool IsProcessOpen()
         {
-            return !_process.HasExited;
+            return _process != null && !_process.HasExited;
         }
 
     }

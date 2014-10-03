@@ -54,6 +54,7 @@ namespace RE4
             CurrentState.LoadingAreaDeaths = memoryReader.ReadInt16(0x085BE80);
             CurrentState.Pesetas = memoryReader.ReadInt32(0x085BE88);
 
+            // Save the changed values
             foreach (var propertyInfo in properties)
             {
                 var currentValue = propertyInfo.GetValue(CurrentState);
