@@ -50,5 +50,10 @@ namespace RE4
             return BitConverter.ToInt32(_readBytes(address, 4), 0);
         }
 
+        public bool IsProcessOpen()
+        {
+            return !_process.HasExited;
+        }
+
     }
 }

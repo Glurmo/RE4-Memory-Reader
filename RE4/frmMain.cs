@@ -22,16 +22,29 @@ namespace RE4
             InitializeComponent();
         }
 
+        private void _stopLogging()
+        {
+            timerMemory.Stop();
+            _memoryReader = null;
+            lvData.Items.Clear();
+        }
 
         private void timerMemory_Tick(object sender, EventArgs e)
         {
-            if (_residentEvilMemory == null)
+            if (_residentEvilMemory == null || _memoryReader == null)
             {
                 _memoryReader = new MemoryReader("bio4");
                 _residentEvilMemory = new ResidentEvilMemory();
             }
-            _residentEvilMemory.Populate(_memoryReader);
-            _populateListView();
+            if (!_memoryReader.IsProcessOpen())
+            {
+                _stopLogging();
+            }
+            else
+            {
+                _residentEvilMemory.Populate(_memoryReader);
+                _populateListView();
+            }
         }
 
         private void _populateListView()
@@ -39,59 +52,65 @@ namespace RE4
             lvData.BeginUpdate();
             lvData.Items.Clear();
             var defaultColour = lvData.ForeColor;
-            var r = _residentEvilMemory;
+            var cs = _residentEvilMemory.CurrentState;
+            var pv = _residentEvilMemory.PreviousValues;
+
+            int dynamicDifficultyScaleDelta = cs.DynamicDifficultyScale - pv.DynamicDifficultyScale;
+            int healthDelta = cs.HealthRemaining - pv.HealthRemaining;
 
             var rows = new []
             {
-                Tuple.Create("Difficulty Level", r.DynamicDifficultyLevel.ToString(), defaultColour), 
-                Tuple.Create("Difficulty Scale", r.DynamicDifficultyScale.ToString(), defaultColour), 
+                Tuple.Create("Difficulty Level", cs.DynamicDifficultyLevel.ToString(), defaultColour), 
+                Tuple.Create("Difficulty Scale", cs.DynamicDifficultyScale.ToString(), defaultColour), 
                 Tuple.Create(
                     "Scale Delta", 
-                    r.PreviousDynamicDifficultyScaleDelta.ToString(), 
-                    (r.PreviousDynamicDifficultyScaleDelta > 0) ? Color.Green : Color.Red
+                    dynamicDifficultyScaleDelta.ToString(), 
+                    (dynamicDifficultyScaleDelta > 0) ? Color.Green : Color.Red
                 ),
                 Tuple.Create("", "", defaultColour),
                 Tuple.Create(
                     "Health", 
-                    String.Format("{0}/{1} ({2}%)", r.HealthCurrent, r.HealthTotal, r.HealthPercentage), 
+                    String.Format("{0}/{1} ({2}%)", cs.HealthRemaining, cs.HealthTotal, cs.HealthPercentage), 
                     defaultColour
                 ),
                 Tuple.Create(
                     "Health Delta", 
-                    r.PreviousHealthDelta.ToString(), 
-                    (r.PreviousHealthDelta > 0) ? Color.Green : Color.Red
+                    healthDelta.ToString(), 
+                    (healthDelta > 0) ? Color.Green : Color.Red
                 ),
                 Tuple.Create("", "", defaultColour),
-                Tuple.Create("Kills (Chapter)", r.ChapterKills.ToString(), defaultColour),
+                Tuple.Create("Kills (Chapter)", cs.ChapterKills.ToString(), defaultColour),
                 Tuple.Create(
                     "Accuracy (Chapter)", 
-                    String.Format("{0}/{1} ({2}%)", r.ChapterShotsOnTarget, r.ChapterShots, r.ChapterAccuracy), 
+                    String.Format("{0}/{1} ({2}%)", cs.ChapterShotsOnTarget, cs.ChapterShots, cs.ChapterAccuracy), 
                     defaultColour
                 ),
                 Tuple.Create("", "", defaultColour),
-                Tuple.Create("Kills (Total)", r.TotalKills.ToString(), defaultColour),
+                Tuple.Create("Kills (Total)", cs.TotalKills.ToString(), defaultColour),
                 Tuple.Create(
                     "Accuracy (Total)", 
-                    String.Format("{0}/{1} ({2}%)", r.TotalShotsOnTarget, r.TotalShots, r.TotalAccuracy), 
+                    String.Format("{0}/{1} ({2}%)", cs.TotalShotsOnTarget, cs.TotalShots, cs.TotalAccuracy), 
                     defaultColour
                 ),
                 Tuple.Create("", "", defaultColour),
-                Tuple.Create("Deaths (Zone)", r.LoadingAreaDeaths.ToString(), defaultColour),
-                Tuple.Create("Deaths (Chapter)", r.ChapterDeaths.ToString(), defaultColour),
-                Tuple.Create("Deaths (Total)", r.TotalDeaths.ToString(), defaultColour)
+                Tuple.Create("Deaths (Zone)", cs.LoadingAreaDeaths.ToString(), defaultColour),
+                Tuple.Create("Deaths (Chapter)", cs.ChapterDeaths.ToString(), defaultColour),
+                Tuple.Create("Deaths (Total)", cs.TotalDeaths.ToString(), defaultColour)
             };
 
             foreach (var row in rows)
             {
-                var item = new ListViewItem();
-                item.Text = row.Item1;
-                item.Font = new Font(lvData.Font, FontStyle.Bold);
+                var item = new ListViewItem
+                {
+                    Text = row.Item1, 
+                    Font = new Font(lvData.Font, FontStyle.Bold),
+                    UseItemStyleForSubItems = false
+                };
                 var subItem = new ListViewItem.ListViewSubItem()
                 {
                     Text = row.Item2,
                     ForeColor = row.Item3
                 };
-                item.UseItemStyleForSubItems = false;
                 item.SubItems.Add(subItem);
                 lvData.Items.Add(item);
             }
@@ -105,7 +124,7 @@ namespace RE4
 
         private void menuItemStop_Click(object sender, EventArgs e)
         {
-            timerMemory.Stop();
+            _stopLogging();
         }
 
         private void frmMain_Load(object sender, EventArgs e)
