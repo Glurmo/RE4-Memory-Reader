@@ -1,5 +1,5 @@
 Resident Evil 4 Memory Viewer
-====
+-------
 
 This tool can be used to monitor the dynamic difficulty level, and various other memory values from Resident Evil 4. It has only been tested with the latest steam version (bio4.exe version 1.0.18384.1 md5:ac6abb25e476b65b4f363247bd205217) and probably won't work with any others. 
 
